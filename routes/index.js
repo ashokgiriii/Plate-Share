@@ -43,12 +43,18 @@ router.post("/donate", (req, res) => {
 });
 
 // Success & Failure callbacks
-router.get("/success", (req, res) => {
-  res.send("✅ Payment was successful!");
+router.get("/payment/success", (req, res) => {
+  res.render('failure', {
+    success: req.flash('success'),
+    error: req.flash('error')
+  })
 });
 
-router.get("/failure", (req, res) => {
-  res.send("❌ Payment failed or was cancelled.");
+router.get("/payment/failure", (req, res) => {
+  res.render('success', {
+    success: req.flash('success'),
+    error: req.flash('error')
+  })
 });
 
 

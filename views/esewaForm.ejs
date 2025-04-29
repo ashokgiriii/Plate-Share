@@ -5,7 +5,6 @@
 </head>
 <body onload="document.getElementById('esewaForm').submit()">
   <p>Redirecting to eSewa...</p>
-
   <form id="esewaForm" action="<%= esewaGatewayUrl %>" method="POST">
     <input type="hidden" name="amount" value="<%= amount %>">
     <input type="hidden" name="tax_amount" value="0">

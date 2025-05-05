@@ -27,10 +27,48 @@ function generateSignature(total_amount, transaction_uuid, product_code, secret_
   return crypto.createHmac('sha256', secret_key).update(message).digest('base64');
 }
 
+<<<<<<< HEAD
 // ------------------
 // Home Page - Shows Available Donations
 // ------------------
 router.get('/', async (req, res) => {
+=======
+// POST: Donation form submission
+router.post("/donate", (req, res) => {
+  const { amount, message } = req.body;
+  const transaction_uuid = uuidv4();
+  const signature = generateSignature(amount, transaction_uuid, MERCHANT_CODE, SECRET_KEY);
+
+  res.render("esewaForm", {
+    amount,
+    message,
+    transaction_uuid,
+    product_code: MERCHANT_CODE,
+    signature,
+    esewaGatewayUrl: ESEWA_GATEWAY_URL,
+    success_url: SUCCESS_URL,
+    failure_url: FAILURE_URL
+  });
+});
+
+// Success & Failure callbacks
+router.get("/payment/success", (req, res) => {
+  res.render('failure', {
+    success: req.flash('success'),
+    error: req.flash('error')
+  })
+});
+
+router.get("/payment/failure", (req, res) => {
+  res.render('success', {
+    success: req.flash('success'),
+    error: req.flash('error')
+  })
+});
+
+
+router.get('/', async function (req, res, next) {
+>>>>>>> 5282eaaae0c4f0b1eb0339fff0b2e9bce0af7476
   try {
     const now = new Date();
     const donations = await Donation.find({

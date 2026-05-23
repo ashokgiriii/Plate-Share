@@ -5,7 +5,8 @@ const flash = require("connect-flash");
 const User = require("../models/user");
 const router = express.Router();
 
-const testamonial = require("../models/testimonial")
+const testamonial = require("../models/testimonial");
+const testimonialData = require("../data/testimonialData");
 
 
 // Assuming userId is stored in the session after login
@@ -78,10 +79,10 @@ router.get('/', async function (req, res, next) {
         const feedbacks = await testamonial.find().populate('user'); // Populating username only
 
         res.render('testimonial', {
-            title: 'Express',
+            ...testimonialData,
             success: req.flash('success'),
             error: req.flash('error'),
-            feedbacks: feedbacks // Pass the feedbacks data to the template
+            feedbacks: feedbacks
         });
     } catch (error) {
         console.error(error);

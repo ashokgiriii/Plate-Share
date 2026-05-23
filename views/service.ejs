@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title><%= title %></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -22,7 +22,7 @@
 
                 <div class="container-xxl py-5 bg-dark hero-header mb-5">
                     <div class="container text-center my-5 pt-5 pb-4">
-                        <h1 class="display-3 text-white mb-3 animated slideInDown">Services</h1>
+                        <h1 class="display-3 text-white mb-3 animated slideInDown"><%= heroTitle %></h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center text-uppercase">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -40,47 +40,22 @@
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Our Services</h5>
-                    <h1 class="mb-5">Explore Our Services</h1>
+                    <h5 class="section-title ff-secondary text-center text-primary fw-normal"><%= sectionTitle %></h5>
+                    <h1 class="mb-5"><%= heading %></h1>
                 </div>
 
                 <div class="row g-4">
-                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <% services.forEach((service, i) => { %>
+                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="<%= (0.1 + i * 0.2).toFixed(1) %>s">
                         <div class="service-item rounded pt-3">
                             <div class="p-4">
-                                <i class="fa fa-3x fa-user-tie text-primary mb-4"></i>
-                                <h5>Social Team</h5>
-                                <p>We have socila team members. Who dont take salary .</p>
+                                <i class="fa fa-3x fa-<%= service.icon %> text-primary mb-4"></i>
+                                <h5><%= service.title %></h5>
+                                <p><%= service.description %></p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="service-item rounded pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-utensils text-primary mb-4"></i>
-                                <h5>Quality Food</h5>
-                                <p>We only accept the qualty food .</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                        <div class="service-item rounded pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-cart-plus text-primary mb-4"></i>
-                                <h5>Online Take/Give</h5>
-                                <p>We can donate fodd from Home , Restaurant etc .</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                        <div class="service-item rounded pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-headset text-primary mb-4"></i>
-                                <h5>24/7 Service</h5>
-                                <p>24 hour Available . </p>
-                            </div>
-                        </div>
-                    </div>
+                    <% }); %>
                 </div>
             </div>
         </div>

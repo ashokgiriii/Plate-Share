@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Plate Share</title>
+  <title><%= title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%- include('config/export') %>
   <link rel="stylesheet" href="/css/index-map-view.css">
@@ -65,9 +65,9 @@
         <div class="container my-5 py-5">
           <div class="row align-items-center g-5">
             <div class="col-lg-6 text-center text-lg-start">
-              <h1 class="display-3 text-white">Enjoy Our<br>Delicious Meal</h1>
+              <h1 class="display-3 text-white"><%- heroTitle %></h1>
               <p class="text-white mb-4 pb-2">
-                All the food is provided by generous individuals from across the country. Big thanks to those who share and donate.
+                <%= heroDescription %>
               </p>
               <button class="btn btn-success"
                 onclick="document.getElementById('donate-popup').style.display='block'">
@@ -85,7 +85,7 @@
 
   <!-- Available Food Donations -->
   <div class="container py-4">
-    <h4 class="mb-3 fw-semibold">📦 Available Food Donations Near You</h4>
+    <h4 class="mb-3 fw-semibold"><%= donationsHeader %></h4>
     <p id="location-info">📍 Determining your location...</p>
     <button onclick="showMyLocation()" class="btn btn-outline-primary btn-sm mb-3">🔍 Show My Location</button>
     <div id="card-list" class="row g-4"></div>

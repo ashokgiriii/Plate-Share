@@ -9,6 +9,15 @@ const ourTeam = require('../models/ourTeams');
 const upload = require('../config/storage');
 
 // ------------------
+// Static Data
+// ------------------
+const indexData = require('../data/indexData');
+const aboutData = require('../data/aboutData');
+const contactData = require('../data/contactData');
+const serviceData = require('../data/serviceData');
+const teamData = require('../data/teamData');
+
+// ------------------
 // eSewa Configuration
 // ------------------
 const {
@@ -27,48 +36,10 @@ function generateSignature(total_amount, transaction_uuid, product_code, secret_
   return crypto.createHmac('sha256', secret_key).update(message).digest('base64');
 }
 
-<<<<<<< HEAD
 // ------------------
 // Home Page - Shows Available Donations
 // ------------------
 router.get('/', async (req, res) => {
-=======
-// POST: Donation form submission
-router.post("/donate", (req, res) => {
-  const { amount, message } = req.body;
-  const transaction_uuid = uuidv4();
-  const signature = generateSignature(amount, transaction_uuid, MERCHANT_CODE, SECRET_KEY);
-
-  res.render("esewaForm", {
-    amount,
-    message,
-    transaction_uuid,
-    product_code: MERCHANT_CODE,
-    signature,
-    esewaGatewayUrl: ESEWA_GATEWAY_URL,
-    success_url: SUCCESS_URL,
-    failure_url: FAILURE_URL
-  });
-});
-
-// Success & Failure callbacks
-router.get("/payment/success", (req, res) => {
-  res.render('failure', {
-    success: req.flash('success'),
-    error: req.flash('error')
-  })
-});
-
-router.get("/payment/failure", (req, res) => {
-  res.render('success', {
-    success: req.flash('success'),
-    error: req.flash('error')
-  })
-});
-
-
-router.get('/', async function (req, res, next) {
->>>>>>> 5282eaaae0c4f0b1eb0339fff0b2e9bce0af7476
   try {
     const now = new Date();
     const donations = await Donation.find({
@@ -77,6 +48,7 @@ router.get('/', async function (req, res, next) {
     });
 
     res.render('index', {
+      ...indexData,
       donations,
       userId: req.session.userId,
       success: req.flash('success'),
@@ -130,7 +102,7 @@ router.get('/payment/failure', (req, res) => {
 // ------------------
 router.get('/about', (req, res) => {
   res.render('about', {
-    title: 'About',
+    ...aboutData,
     success: req.flash('success'),
     error: req.flash('error')
   });
@@ -138,7 +110,7 @@ router.get('/about', (req, res) => {
 
 router.get('/contact', (req, res) => {
   res.render('contact', {
-    title: 'Contact',
+    ...contactData,
     success: req.flash('success'),
     error: req.flash('error')
   });
@@ -146,7 +118,7 @@ router.get('/contact', (req, res) => {
 
 router.get('/service', (req, res) => {
   res.render('service', {
-    title: 'Services',
+    ...serviceData,
     success: req.flash('success'),
     error: req.flash('error')
   });
@@ -156,7 +128,7 @@ router.get('/team', async (req, res) => {
   try {
     const team = await ourTeam.find();
     res.render('team', {
-      title: 'Our Team',
+      ...teamData,
       team,
       success: req.flash('success'),
       error: req.flash('error')

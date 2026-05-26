@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const { MongoStore } = require('connect-mongo');
 const flash = require('express-flash');
 const methodOverride = require('method-override');
-const createError = require('http-errors');
 
 // Route Imports
 const indexRouter = require('./routes/index');
@@ -17,17 +17,27 @@ const foodRouter = require('./routes/food');
 const testimonialRouter = require('./routes/testimonial');
 const requestRouter = require('./routes/request');
 const ourTeamsRouter = require('./routes/ourTeams');
+const footerData = require('./data/footerData');
+const errorData = require('./data/errorData');
+const notFoundData = require('./data/notFoundData');
 
 // Initialize Express App
 const app = express();
+const isProduction = process.env.NODE_ENV === 'production';
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/plateshare';
+
+if (isProduction && !process.env.MONGODB_URI) {
+  throw new Error('MONGODB_URI is required in production.');
+}
+
+if (isProduction && !process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET is required in production.');
+}
 
 // --------------------
 // Database Connection
 // --------------------
-mongoose.connect('mongodb://localhost/plateshare', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(mongoUri)
   .then(() => console.log("✅ MongoDB connected successfully"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
@@ -40,7 +50,9 @@ app.set('view engine', 'ejs');
 // --------------------
 // Middleware Setup
 // --------------------
-app.use(morgan('dev'));
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
+app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -51,9 +63,19 @@ app.use(methodOverride('_method'));
 // Session & Flash
 // --------------------
 app.use(session({
-  secret: 'your-secret-key', // 🔒 Replace with env var in production
+  secret: process.env.SESSION_SECRET || 'development-session-secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: mongoUri,
+    collectionName: 'sessions'
+  }),
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: isProduction,
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 app.use(flash());
 
@@ -63,6 +85,8 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId || null;
   res.locals.memberId = req.session.memberId || null;
+  res.locals.success = [];
+  res.locals.error = [];
   next();
 });
 
@@ -84,15 +108,32 @@ app.use('/ourTeams', ourTeamsRouter);
 
 // 404 - Not Found
 app.use((req, res, next) => {
-  next(createError(404));
+  res.status(404).render('notFound', {
+    ...notFoundData,
+    footerData,
+    requestedUrl: req.originalUrl,
+    success: req.flash('success'),
+    error: req.flash('error')
+  });
 });
 
-// 500 - Global Error Handler
+// Global Error Handler
 app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+  const statusCode = err.status || err.statusCode || 500;
+  const showDetails = !isProduction;
+
+  console.error(err);
+
+  res.status(statusCode);
+  res.render('error', {
+    ...errorData,
+    footerData,
+    statusCode,
+    message: statusCode === 500 && isProduction ? errorData.message : err.message,
+    stack: showDetails ? err.stack : null,
+    success: req.flash('success'),
+    error: req.flash('error')
+  });
 });
 
 // --------------------

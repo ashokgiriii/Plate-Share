@@ -72,8 +72,12 @@
                                             target="_blank" class="btn btn-sm btn-outline-success w-50">Directions</a>
 
                                     </div>
-                                    <button class="btn btn-sm btn-warning w-100 mt-2"
-                                        onclick="showDonationForm('<%= request._id %>')">I Want to Donate</button>
+                                    <% if (userId) { %>
+                                        <button class="btn btn-sm btn-warning w-100 mt-2"
+                                            onclick="showDonationForm('<%= request._id %>')">I Want to Donate</button>
+                                    <% } else { %>
+                                        <a href="/users/login" class="btn btn-sm btn-warning w-100 mt-2">Login to Donate</a>
+                                    <% } %>
 
                                 </div>
                             </div>
@@ -81,42 +85,44 @@
 
 
                         <!-- Donation Modal -->
-                        <div class="modal fade" id="donationModal-<%= request._id %>" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content shadow-sm">
-                                    <form action="/request/i-want-to-donate" method="POST"
-                                        onsubmit="return validateDonationForm('<%= request._id %>')">
-                                        <input type="hidden" name="requestId" value="<%= request._id %>">
-                                        <input type="hidden" id="latitude-<%= request._id %>" name="latitude">
-                                        <input type="hidden" id="longitude-<%= request._id %>" name="longitude">
+                        <% if (userId) { %>
+                            <div class="modal fade" id="donationModal-<%= request._id %>" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content shadow-sm">
+                                        <form action="/request/i-want-to-donate" method="POST"
+                                            onsubmit="return validateDonationForm('<%= request._id %>')">
+                                            <input type="hidden" name="requestId" value="<%= request._id %>">
+                                            <input type="hidden" id="latitude-<%= request._id %>" name="latitude">
+                                            <input type="hidden" id="longitude-<%= request._id %>" name="longitude">
 
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">🍱 Offer Food Donation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label class="form-label">📍 Your Address</label>
-                                                <input type="text" name="address" class="form-control" required>
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Offer Food Donation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">📝 Message</label>
-                                                <textarea name="message" class="form-control" rows="3"
-                                                    required></textarea>
-                                            </div>
-                                            <div class="location-alert text-center small">📌 Your location will be
-                                                captured automatically.</div>
-                                        </div>
 
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success w-100">Send Donation
-                                                Offer</button>
-                                        </div>
-                                    </form>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Your Address</label>
+                                                    <input type="text" name="address" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Message</label>
+                                                    <textarea name="message" class="form-control" rows="3"
+                                                        required></textarea>
+                                                </div>
+                                                <div class="location-alert text-center small">Your location will be
+                                                    captured automatically.</div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success w-100">Send Donation
+                                                    Offer</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <% } %>
 
 
                         <!-- Modal for Full Details -->
@@ -201,11 +207,16 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll('form').forEach(form => {
+            document.querySelectorAll('form[action="/request/i-want-to-donate"]').forEach(form => {
                 form.addEventListener('input', () => {
-                    const message = form.querySelector('textarea').value.trim().split(/\s+/).length;
-                    const address = form.querySelector('input[type="text"]').value.trim().split(/\s+/).length;
+                    const messageField = form.querySelector('textarea');
+                    const addressField = form.querySelector('input[type="text"]');
                     const donateButton = form.querySelector('button[type="submit"]');
+
+                    if (!messageField || !addressField || !donateButton) return;
+
+                    const message = messageField.value.trim().split(/\s+/).filter(Boolean).length;
+                    const address = addressField.value.trim().split(/\s+/).filter(Boolean).length;
 
                     if (message >= 5 && address >= 2) {
                         donateButton.disabled = false;
@@ -215,8 +226,8 @@
                 });
 
                 form.addEventListener('submit', (e) => {
-                    const message = form.querySelector('textarea').value.trim().split(/\s+/).length;
-                    const address = form.querySelector('input[type="text"]').value.trim().split(/\s+/).length;
+                    const message = form.querySelector('textarea').value.trim().split(/\s+/).filter(Boolean).length;
+                    const address = form.querySelector('input[type="text"]').value.trim().split(/\s+/).filter(Boolean).length;
 
                     if (message < 5 || address < 2) {
                         e.preventDefault();

@@ -2,6 +2,11 @@ function ensureAuthenticated(req, res, next) {
     if (req.session.userId) {
         return next(); // User is logged in, proceed to the next route
     }
+
+    if (req.flash) {
+        req.flash('error', 'Please log in first.');
+    }
+
     res.redirect('/users/login'); // User is not logged in, redirect to login
 }
 

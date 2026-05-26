@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: plate-share
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ESEWA_MERCHANT_CODE
+        sync: false
+      - key: ESEWA_SECRET_KEY
+        sync: false
+      - key: ESEWA_GATEWAY_URL
+        sync: false
+      - key: ESEWA_SUCCESS_URL
+        sync: false
+      - key: ESEWA_FAILURE_URL
+        sync: false
+      - key: EMAIL
+        sync: false
+      - key: PASSWORD
+        sync: false
+      - key: EMAIL_USER
+        sync: false

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title><%= title %></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -20,12 +20,12 @@
 
                 <div class="container-xxl py-5 bg-dark hero-header mb-5">
                     <div class="container text-center my-5 pt-5 pb-4">
-                        <h1 class="display-3 text-white mb-3 animated slideInDown">Sign Up </h1>
+                        <h1 class="display-3 text-white mb-3 animated slideInDown"><%= heroTitle %></h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center text-uppercase">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page">Sign Up</li>
+                                <li class="breadcrumb-item text-white active" aria-current="page"><%= sectionTitle %></li>
                             </ol>
                         </nav>
                     </div>
@@ -48,7 +48,7 @@
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="name" name="name"
                                                 placeholder="Your Name" required>
-                                            <label for="name">Your Name</label>
+                                            <label for="name"><%= formFields.name %></label>
                                         </div>
                                         <small class="text-danger" id="nameError"></small>
                                     </div>
@@ -58,7 +58,7 @@
                                         <div class="form-floating">
                                             <input type="email" class="form-control" id="email" name="email"
                                                 placeholder="Your Email" required>
-                                            <label for="email">Your Email</label>
+                                            <label for="email"><%= formFields.email %></label>
                                         </div>
                                         <small class="text-danger" id="emailError"></small>
                                     </div>
@@ -68,7 +68,7 @@
                                         <div class="form-floating">
                                             <input type="password" name="password" class="form-control" id="password"
                                                 placeholder="Your Password" required>
-                                            <label for="password">Password</label>
+                                            <label for="password"><%= formFields.password %></label>
                                         </div>
                                         <small class="text-danger" id="passwordError"></small>
                                     </div>
@@ -88,7 +88,7 @@
                                         <div class="form-floating">
                                             <input type="tel" name="contact" class="form-control" id="contact"
                                                 placeholder="Contact Number" required>
-                                            <label for="contact">Contact Number</label>
+                                            <label for="contact"><%= formFields.contact %></label>
 
                                         </div>
                                         <small class="text-danger" id="contactError"></small>
@@ -98,7 +98,7 @@
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="street" name="street"
                                                 placeholder="Street" required>
-                                            <label for="street">Street</label>
+                                            <label for="street"><%= formFields.street %></label>
                                         </div>
                                         <small class="text-danger" id="streetError"></small>
                                     </div>
@@ -109,14 +109,14 @@
                                         <div class="form-floating">
                                             <input type="file" name="photo" class="form-control" id="photoInput"
                                                 accept="image/*" required>
-                                            <label for="photoInput">Upload Photo</label>
+                                            <label for="photoInput"><%= formFields.photo %></label>
                                         </div>
                                         <small class="text-danger" id="photoError"></small>
                                     </div>
 
                                     <!-- Submit Button -->
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100 py-3" type="submit">Sign Up</button>
+                                        <button class="btn btn-primary w-100 py-3" type="submit"><%= buttonText %></button>
                                     </div>
                                 </div>
                             </form>

@@ -7,6 +7,10 @@ const SuccessRequestDonation = require("../models/successRequestDonation")
 const FoodRequest = require("../models/request")
 const transporter = require('../config/mailer');
 
+const footerData = require('../data/footerData');
+const requestData = require('../data/requestData');
+const requestedForFoodData = require('../data/requestedForFoodData');
+
 
 
 router.get("/", ensureAuthenticated, async (req, res) => {
@@ -18,6 +22,8 @@ router.get("/", ensureAuthenticated, async (req, res) => {
     }
     // Pass user details to the form
     res.render("request", {
+        ...requestData,
+        footerData,
         user,
         success: req.flash('success'),
         error: req.flash('error')
@@ -105,6 +111,8 @@ router.get("/requestedForFood", async (req, res) => {
         });
 
         res.render("requestedForFood", {
+            ...requestedForFoodData,
+            footerData,
             success: req.flash('success'),
             error: req.flash('error'),
             requests: enrichedRequests

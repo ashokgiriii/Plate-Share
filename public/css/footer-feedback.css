@@ -1,0 +1,53 @@
+.background-dimmer {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+.feedback-form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: none;
+    width: 400px;
+    max-width: calc(100% - 32px);
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.feedback-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.feedback-form-container button,
+.feedback-form-container a.btn {
+    width: 48%;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.feedback-form-container button[type="button"] {
+    background-color: #ccc;
+    color: #fff;
+    border-color: #ccc;
+}
+
+.feedback-form-container button[type="button"]:hover {
+    background-color: #999;
+    border-color: #999;
+}
+
+.footer-feedback-entry {
+    max-width: 400px;
+}

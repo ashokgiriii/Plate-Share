@@ -8,13 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/food-details.css">
 
     <%- include('config/export') %>
 </head>
@@ -55,8 +49,8 @@
 
                                     <% if (food.photos && food.photos[1]) { %>
                                         <div class="col-6 text-start">
-                                            <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.3s"
-                                                src="/<%= food.photos[1] %>" style="margin-top: 25%;">
+                                            <img class="img-fluid rounded w-75 wow zoomIn food-detail-offset-image" data-wow-delay="0.3s"
+                                                src="/<%= food.photos[1] %>">
                                         </div>
                                         <% } %>
 
@@ -101,50 +95,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 class="  countdown section-title ff-secondary text-start text-primary fw-normal"
-                                data-expiry="<%= food.expiryTime %>">
-                                <%=food.expiryTime%>
-                                    </h5><br>
-                                    <script>
-
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            const countdownElements = document.querySelectorAll(".countdown");
-
-                                            countdownElements.forEach((element) => {
-                                                const expiryTime = new Date(element.getAttribute("data-expiry")).getTime();
-
-                                                function updateCountdown() {
-                                                    const now = new Date().getTime();
-                                                    const distance = expiryTime - now;
-
-                                                    if (distance <= 0) {
-                                                        element.textContent = "Expired";
-                                                        clearInterval(interval); // Stop updating
-                                                        return;
-                                                    }
-
-                                                    const hours = Math.floor((distance / (1000 * 60 * 60)));
-                                                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                                                    element.textContent = `${hours}h ${minutes}m ${seconds}s to Expire`;
-                                                }
-
-                                                updateCountdown(); // Initial call
-                                                const interval = setInterval(updateCountdown, 1000); // Update every second
-                                            });
-                                        });
-                                    </script>
-                                    <form action="/users/claim/<%= food._id %>" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to claim this food?');">
+                                    <h3 class="  countdown section-title ff-secondary text-start text-primary fw-normal"
+                                        data-expiry="<%= food.expiryTime %>">
+                                        <%=food.expiryTime%>
+                                            </h5><br>
+                                    <form class="claim-food-form" action="/users/claim/<%= food._id %>" method="POST"
+                                        data-confirm-message="<%= claimConfirmMessage %>">
                                         <% if (food.status==="claimed" ) { %>
-                                            <button class="btn btn-secondary py-3 px-5 mt-2" disabled>Claimed</button>
+                                            <button class="btn btn-secondary py-3 px-5 mt-2" disabled><%= claimedButton %></button>
                                             <% } else { %>
-                                                <form action="/users/claim/<%= food._id %>" method="POST"
-                                                    onsubmit="return confirm('Are you sure you want to claim this food?');">
-                                                    <button class="btn btn-primary py-3 px-5 mt-2" type="submit">Claim
-                                                        Food</button>
-                                                </form>
+                                                <button class="btn btn-primary py-3 px-5 mt-2" type="submit"><%= claimButton %></button>
                                                 <% } %>
 
                                     </form>
@@ -155,24 +115,16 @@
             <br>
             <br>
 
-            <span id="latitude" style="display: none;">
-                <%= food.latitude %>
-            </span>
-            <span id="longitude" style="display: none;">
-                <%= food.longitude %>
-            </span>
-
-
-            <script>
-
-                const latitude = document.getElementById("latitude").innerText
-                const longitude = document.getElementById("longitude").innerText
-
-                const mapSrc = `https://maps.google.com/maps?q=${latitude},${longitude}&t=&z=14&ie=UTF8&iwloc=B&output=embed`;
-                document.getElementById("map").src = mapSrc;
-
-            </script>
+            <iframe
+                id="map"
+                class="food-details-map"
+                data-latitude="<%= food.latitude %>"
+                data-longitude="<%= food.longitude %>"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
         </div>
+        <script src="/js/food-details.js"></script>
         <%- include('config/footer')%>
 
 </body>

@@ -5,6 +5,8 @@ const Admin = require("../models/admin");
 const User = require("../models/user");
 const Donation = require("../models/donation");
 const Testimonial = require("../models/testimonial")
+const footerData = require("../data/footerData");
+const adminLoginData = require("../data/adminLoginData");
 
 // Middleware to check if admin is logged in
 function isAuthenticated(req, res, next) {
@@ -48,6 +50,8 @@ router.post("/create", async (req, res) => {
 // Login Page
 router.get("/login", (req, res) => {
     res.render("adminLogin", {
+        ...adminLoginData,
+        footerData,
         success: req.flash('success'),
         error: req.flash('error')
     });
@@ -73,6 +77,7 @@ router.get("/", isAuthenticated, async (req, res) => {
     try {
         const users = await User.find().populate("donations"); // Corrected populate syntax
         res.render("admin", {
+            footerData,
             admin: req.session.admin, users,
             success: req.flash('success'),
             error: req.flash('error')

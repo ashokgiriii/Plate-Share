@@ -1,0 +1,10 @@
+.food-details-map {
+    width: 100%;
+    height: 500px;
+    margin-top: 10px;
+    border: 0;
+}
+
+.food-detail-offset-image {
+    margin-top: 25%;
+}

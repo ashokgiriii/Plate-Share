@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Plate Share</title>
+  <title><%= title %></title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -23,9 +23,10 @@
               <div class="card shadow border-start border-5 border-success p-4">
                 <div class="text-center">
                   <img src="https://img.icons8.com/flat-round/64/000000/checkmark.png" alt="Success Icon" class="mb-3" />
-                  <h2 class="text-success">Payment Successful</h2>
-                  <p>Your eSewa payment was completed successfully.</p>
-                  <a href="/" class="btn btn-success mt-3">Go to Dashboard</a>
+                  <h2 class="text-danger"><%= heading %></h2>
+                  <p><%= message %></p>
+                  <p class="text-muted"><%= subMessage %></p>
+                  <a href="<%= buttonLink %>" class="btn btn-danger mt-3"><%= buttonText %></a>
                 </div>
               </div>
             </div>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login - Bootstrap Template</title>
+    <title><%= title %></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -26,12 +26,12 @@
         <!-- Hero Section -->
         <div class="container-xxl py-5 bg-dark hero-header mb-5">
             <div class="container text-center my-5 pt-5 pb-4">
-                <h1 class="display-3 text-white mb-3 animated slideInDown">Login</h1>
+                <h1 class="display-3 text-white mb-3 animated slideInDown"><%= heroTitle %></h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center text-uppercase">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Login </li>
+                        <li class="breadcrumb-item text-white active" aria-current="page"><%= sectionTitle %></li>
                     </ol>
                 </nav>
             </div>
@@ -43,14 +43,14 @@
                 <div class="row justify-content-center g-4">
                     <div class="col-md-6">
                         <div class="wow fadeInUp" data-wow-delay="0.2s">
-                            <form accept="/users/login" method="post" id="loginForm">
+                            <form action="/users/login" method="post" id="loginForm">
                                 <div class="row g-3">
                                     <!-- Email Field -->
                                     <div class="col-md-12">
                                         <div class="form-floating">
                                             <input type="email" class="form-control" id="email" placeholder="Your Email"
                                                 name="email" required>
-                                            <label for="email">Your Email</label>
+                                            <label for="email"><%= formFields.email %></label>
                                         </div>
                                     </div>
 
@@ -59,24 +59,23 @@
                                         <div class="form-floating">
                                             <input type="password" class="form-control" id="password" name="password"
                                                 placeholder="Your Password" required>
-                                            <label for="password">Password</label>
+                                            <label for="password"><%= formFields.password %></label>
                                         </div>
                                     </div>
 
                                     <!-- Forgot Password Link -->
                                     <div class="col-md-12 text-end">
-                                        <a href="#" class="text-primary">Forgot Password?</a>
+                                        <a href="/users/forgot-password" class="text-primary"><%= forgotPassword %></a>
                                     </div>
 
                                     <!-- Submit Button -->
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100 py-3" type="submit">Login</button>
+                                        <button class="btn btn-primary w-100 py-3" type="submit"><%= buttonText %></button>
                                     </div>
 
                                     <!-- Signup Link -->
                                     <div class="col-md-12 text-center mt-3">
-                                        <p>Don't have an account? <a href="/users/signup" class="text-primary">Sign
-                                                up</a></p>
+                                        <p><%= noAccount %> <a href="/users/signup" class="text-primary"><%= signupLink %></a></p>
                                     </div>
                                 </div>
                             </form>

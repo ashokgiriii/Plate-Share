@@ -5,27 +5,46 @@ const Donation = require('../models/donation')
 const deleteExpiredDonations = require('../config/cronJobs'); // Adjust path if needed
 deleteExpiredDonations(); // Start the scheduled task
 
+const footerData = require('../data/footerData');
+const foodDetailsData = require('../data/foodDetailsData');
+const notFoundData = require('../data/notFoundData');
 
 const mongoose = require('mongoose');
 
-router.get("/:foodId", ensureAuthenticated, async function (req, res, next) {
+function renderNotFound(req, res) {
+  return res.status(404).render('notFound', {
+    ...notFoundData,
+    footerData,
+    requestedUrl: req.originalUrl,
+    success: req.flash('success'),
+    error: req.flash('error')
+  });
+}
+
+function validateFoodId(req, res, next) {
   const foodId = req.params.foodId;
 
   // ✅ Validate the ObjectId format first
   if (!mongoose.Types.ObjectId.isValid(foodId)) {
-    req.flash('error', 'Invalid food ID.');
-    return res.redirect('/'); // Or another appropriate fallback page
+    return renderNotFound(req, res);
   }
+
+  next();
+}
+
+router.get("/:foodId", validateFoodId, ensureAuthenticated, async function (req, res, next) {
+  const foodId = req.params.foodId;
 
   try {
     const food = await Donation.findById(foodId).populate('user');
 
     if (!food) {
-      req.flash('error', 'Food not found.');
-      return res.redirect('/');
+      return renderNotFound(req, res);
     }
 
     res.render("foodDetails", {
+      ...foodDetailsData,
+      footerData,
       food,
       error: req.flash('error'),
       success: req.flash('success')

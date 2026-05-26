@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
     <a href="/" class="navbar-brand p-0">
-        <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>food4rall</h1>
+        <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>plateshare</h1>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="fa fa-bars"></span>
@@ -46,7 +46,11 @@
         
             <a href="/contact" class="nav-item nav-link">Contact</a>
           </div>
-        <a href="/users/donate" class="btn btn-primary py-2 px-4">Donate Food</a>
+        <% if (userId) { %>
+          <a href="/users/donate" class="btn btn-primary py-2 px-4">Donate Food</a>
+        <% } else { %>
+          <a href="/users/login" class="btn btn-primary py-2 px-4">Login to Donate</a>
+        <% } %>
     </div>
 </nav>
 <!-- Flash Message for Success -->

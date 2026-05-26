@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Request Food - Plate Share</title>
+  <title><%= title %></title>
   <%- include('config/export') %>
 
   <style>
@@ -57,7 +57,7 @@
   <!-- Header -->
   <div class="container-xxl py-5 bg-dark hero-header mb-5">
     <div class="container text-center my-5 pt-5 pb-4">
-      <h1 class="display-4 text-white mb-3 animated slideInDown">Request Food</h1>
+      <h1 class="display-4 text-white mb-3 animated slideInDown"><%= heroTitle %></h1>
     </div>
   </div>
 
@@ -67,7 +67,7 @@
       <!-- Left: Form -->
       <div class="col-md-6">
         <div class="form-section bg-white p-4 shadow rounded">
-          <h2 class="text-center mb-4">Submit a Food Request</h2>
+          <h2 class="text-center mb-4"><%= heading %></h2>
           <form id="foodRequestForm" action="/request/submit-food-request" method="POST" novalidate>
             <!-- Hidden Location -->
             <input type="hidden" id="latitude" name="latitude" />
@@ -75,7 +75,7 @@
   
             <!-- Message -->
             <div class="mb-3">
-              <label for="message" class="form-label">📝 Message</label>
+              <label for="message" class="form-label"><%= formFields.message %></label>
               <textarea class="form-control" id="message" name="message" rows="3"
                 placeholder="Please share any important details..." required></textarea>
               <div class="invalid-feedback">Message must be at least 5 words.</div>
@@ -83,7 +83,7 @@
   
             <!-- Address -->
             <div class="mb-3">
-              <label for="address" class="form-label">📍 Delivery Address</label>
+              <label for="address" class="form-label"><%= formFields.address %></label>
               <input type="text" id="address" name="address" class="form-control"
                 placeholder="Enter your full delivery address" required />
               <div class="invalid-feedback">Address must be at least 5 characters.</div>
@@ -91,7 +91,7 @@
   
   
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-success w-100">Submit Request</button>
+            <button type="submit" class="btn btn-success w-100"><%= buttonText %></button>
   
             <!-- Location Info -->
             <div class="location-alert mt-3">

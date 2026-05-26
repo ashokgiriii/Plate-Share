@@ -6,5 +6,5 @@ module.exports = {
   subMessage: "If the problem persists, please contact our support team.",
   buttonText: "Try Again",
   buttonLink: "/",
-  supportEmail: "tech@foodforall.com.np"
+  supportEmail: "tech@plateshare.com.np"
 };

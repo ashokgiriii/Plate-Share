@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Restoran - Bootstrap Restaurant Template</title>
+    <title><%= title %></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -24,7 +24,7 @@
             <%- include('config/nav') %>
                 <div class="container-xxl py-5 bg-dark hero-header mb-5">
                     <div class="container text-center my-5 pt-5 pb-4">
-                        <h1 class="display-3 text-white mb-3 animated slideInDown">Donate Food</h1>
+                        <h1 class="display-3 text-white mb-3 animated slideInDown"><%= heroTitle %></h1>
                     </div>
                 </div>
         </div>
@@ -37,8 +37,8 @@
                     <!-- Left: Donation Form -->
                     <div class="col-md-6">
                         <div class="wow fadeInUp" data-wow-delay="0.2s">
-                            <h3 class="mb-4 text-primary">🍛 Share a Meal. Spread Kindness.</h3>
-                            <p class="text-muted mb-4">Fill in the details below to donate leftover or extra food. Your small effort can make a big difference in someone's life.</p>
+                            <h3 class="mb-4 text-primary"><%= heading %></h3>
+                            <p class="text-muted mb-4"><%= description %></p>
         
                             <form action="/users/donate" enctype="multipart/form-data" method="post" id="donationForm" novalidate>
                                 <div class="row g-3">
@@ -102,7 +102,7 @@
                                     <input type="hidden" name="donor" value="<%= user._id %>">
         
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100 py-3" type="submit">Donate Now</button>
+                                        <button class="btn btn-primary w-100 py-3" type="submit"><%= buttonText %></button>
                                     </div>
         
                                     <div class="col-12 text-muted small text-center">

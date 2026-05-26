@@ -6,15 +6,23 @@ const ourTeams = require("../models/ourTeams")
 const FoodRequest = require("../models/request")
 const successRequestDonation = require("../models/successRequestDonation")
 
+const footerData = require("../data/footerData");
+const memberLoginData = require("../data/memberLoginData");
+const memberProfileData = require("../data/memberProfileData");
+const memeberSignupData = require("../data/memeberSignupData");
 
 router.get("/", function (req, res) {
   res.render("ourTeams", {
+    ...memeberSignupData,
+    footerData,
     success: req.flash('success'),
     error: req.flash('error')
   })
 })
 router.get("/login", function (req, res) {
   res.render("memberLogin", {
+    ...memberLoginData,
+    footerData,
     success: req.flash('success'),
     error: req.flash('error')
   })
@@ -44,6 +52,8 @@ router.get('/readyToPick', async (req, res) => {
       });
 
     res.render("readyToPick", {
+      ...memberProfileData,
+      footerData,
       success: req.flash('success'),
       error: req.flash('error'),
       member,
@@ -84,6 +94,8 @@ router.get('/memberProfile', async (req, res) => {
       });
 
     res.render("memberProfile", {
+      ...memberProfileData,
+      footerData,
       success: req.flash('success'),
       error: req.flash('error'),
       member,

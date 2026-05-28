@@ -1,4 +1,3 @@
-// Navbar
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
     <a href="/" class="navbar-brand p-0">
         <h1 class="text-primary m-0">
@@ -10,6 +9,9 @@
         <span class="fa fa-bars"></span>
     </button>
 
+    <% var isUserLoggedIn = typeof userId !== 'undefined' && userId; %>
+    <% var isMemberLoggedIn = typeof memberId !== 'undefined' && memberId; %>
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto py-0 pe-4">
 
@@ -17,7 +19,7 @@
             <a href="/about" class="nav-item nav-link">About</a>
             <a href="/request/requestedForFood" class="nav-item nav-link">Requested For Food</a>
 
-            <% if (typeof memberId !== 'undefined' && memberId) { %>
+            <% if (isMemberLoggedIn) { %>
                 <a href="/ourTeams/readyToPick" class="nav-item nav-link">Ready To Pick</a>
             <% } %>
 
@@ -26,20 +28,20 @@
 
                 <div class="dropdown-menu m-0">
 
-                    <% if ((!userId && !memberId) || (typeof userId === 'undefined' && typeof memberId === 'undefined')) { %>
+                    <% if (!isUserLoggedIn && !isMemberLoggedIn) { %>
                         <!-- Not logged in -->
                         <a href="/users/signup" class="dropdown-item">User Sign Up</a>
                         <a href="/users/login" class="dropdown-item">User Login</a>
                         <a href="/memberSignup" class="dropdown-item">Member Sign Up</a>
                         <a href="/ourTeams/login" class="dropdown-item">Member Login</a>
 
-                    <% } else if (typeof userId !== 'undefined' && userId) { %>
+                    <% } else if (isUserLoggedIn) { %>
                         <!-- User logged in -->
                         <a href="/users/user" class="dropdown-item">User Profile</a>
                         <a href="/users/logout" class="dropdown-item">Logout</a>
                         <a href="/request" class="dropdown-item">Request Food</a>
 
-                    <% } else if (typeof memberId !== 'undefined' && memberId) { %>
+                    <% } else if (isMemberLoggedIn) { %>
                         <!-- Member logged in -->
                         <a href="/ourTeams/memberProfile" class="dropdown-item">Member Profile</a>
                         <a href="/ourTeams/logout" class="dropdown-item">Logout</a>
@@ -54,7 +56,7 @@
             <a href="/contact" class="nav-item nav-link">Contact</a>
         </div>
 
-        <% if (typeof userId !== 'undefined' && userId) { %>
+        <% if (isUserLoggedIn) { %>
             <a href="/users/donate" class="btn btn-primary py-2 px-4">Donate Food</a>
         <% } else { %>
             <a href="/users/login" class="btn btn-primary py-2 px-4">Login to Donate</a>

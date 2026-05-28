@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { MongoStore } = require('connect-mongo');
-const flash = require('express-flash');
+const flash = require('connect-flash');
 const methodOverride = require('method-override');
 
 // Route Imports
@@ -17,12 +17,15 @@ const foodRouter = require('./routes/food');
 const testimonialRouter = require('./routes/testimonial');
 const requestRouter = require('./routes/request');
 const ourTeamsRouter = require('./routes/ourTeams');
+
+// Data Imports
 const footerData = require('./data/footerData');
 const errorData = require('./data/errorData');
 const notFoundData = require('./data/notFoundData');
 
 // Initialize Express App
 const app = express();
+
 const isProduction = process.env.NODE_ENV === 'production';
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/plateshare';
 
@@ -52,6 +55,7 @@ app.set('view engine', 'ejs');
 // --------------------
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
+
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -77,6 +81,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24
   }
 }));
+
 app.use(flash());
 
 // --------------------
@@ -85,11 +90,13 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId || null;
   res.locals.memberId = req.session.memberId || null;
-  res.locals.success = [];
-  res.locals.error = [];
+
+  // FIX: use flash correctly (DO NOT overwrite with empty arrays)
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+
   next();
 });
-
 
 // --------------------
 // Routes
@@ -103,11 +110,9 @@ app.use('/request', requestRouter);
 app.use('/ourTeams', ourTeamsRouter);
 
 // --------------------
-// Error Handling
+// 404 Handler
 // --------------------
-
-// 404 - Not Found
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).render('notFound', {
     ...notFoundData,
     footerData,
@@ -117,15 +122,16 @@ app.use((req, res, next) => {
   });
 });
 
+// --------------------
 // Global Error Handler
+// --------------------
 app.use((err, req, res, next) => {
   const statusCode = err.status || err.statusCode || 500;
   const showDetails = !isProduction;
 
   console.error(err);
 
-  res.status(statusCode);
-  res.render('error', {
+  res.status(statusCode).render('error', {
     ...errorData,
     footerData,
     statusCode,

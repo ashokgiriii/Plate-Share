@@ -51,8 +51,8 @@ const footerData = {
 
   copyright: {
     website: "plateshare.com.np",
-    designedBy: "clawbitlabs",
-    designedByUrl: "https://clawbitlabs.com",
+    designedBy: "clawbit",
+    designedByUrl: "https://clawbit.com",
   },
 
   footerMenu: [

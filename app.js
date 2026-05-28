@@ -29,6 +29,9 @@ const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost/plateshare';
 
+// --------------------
+// Safety Checks
+// --------------------
 if (isProduction && !process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI is required in production.');
 }
@@ -64,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 
 // --------------------
-// Session & Flash
+// SESSION (MUST BE FIRST)
 // --------------------
 app.use(session({
   secret: process.env.SESSION_SECRET || 'development-session-secret',
@@ -82,6 +85,9 @@ app.use(session({
   }
 }));
 
+// --------------------
+// FLASH (MUST BE AFTER SESSION)
+// --------------------
 app.use(flash());
 
 // --------------------
@@ -91,9 +97,14 @@ app.use((req, res, next) => {
   res.locals.userId = req.session.userId || null;
   res.locals.memberId = req.session.memberId || null;
 
-  // FIX: use flash correctly (DO NOT overwrite with empty arrays)
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
+  // SAFE FLASH (prevents crash)
+  try {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+  } catch (err) {
+    res.locals.success = [];
+    res.locals.error = [];
+  }
 
   next();
 });
@@ -117,8 +128,8 @@ app.use((req, res) => {
     ...notFoundData,
     footerData,
     requestedUrl: req.originalUrl,
-    success: req.flash('success'),
-    error: req.flash('error')
+    success: [],
+    error: []
   });
 });
 
@@ -137,8 +148,8 @@ app.use((err, req, res, next) => {
     statusCode,
     message: statusCode === 500 && isProduction ? errorData.message : err.message,
     stack: showDetails ? err.stack : null,
-    success: req.flash('success'),
-    error: req.flash('error')
+    success: [],
+    error: []
   });
 });
 

@@ -138,8 +138,9 @@
 <div class="background-dimmer" id="backgroundDimmer"></div>
 
 <form class="feedback-form-container" id="feedbackForm" action="/testimonial" method="post">
+    <% var isUserLoggedIn = typeof userId !== 'undefined' && userId; %>
     <h5 class="mb-3 text-dark"><%= footerData.feedbackModal.title %></h5>
-    <% if (!userId) { %>
+    <% if (!isUserLoggedIn) { %>
         <p class="text-muted mb-3"><%= footerData.feedbackModal.loginMessage %></p>
     <% } %>
     <textarea
@@ -152,7 +153,7 @@
     <small id="errorMessage" class="text-danger d-none"><%= footerData.feedbackModal.validationMessage %></small>
     <div class="d-flex justify-content-between gap-2">
         <button class="btn btn-secondary" type="button" id="closeFeedbackFormBtn"><%= footerData.feedbackModal.cancelButton %></button>
-        <% if (userId) { %>
+        <% if (isUserLoggedIn) { %>
             <button class="btn btn-primary" type="submit"><%= footerData.feedbackModal.submitButton %></button>
         <% } else { %>
             <a class="btn btn-primary mt-2" href="/users/login"><%= footerData.feedbackModal.loginButton %></a>
